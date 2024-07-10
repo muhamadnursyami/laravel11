@@ -9,7 +9,7 @@
 
             </a>
             <div class="text-base text-gray-500">
-                <a href=""> {{ $post['author'] }}</a>
+                <a href=""> {{ $post['authors'] }}</a>
             </div>
             {{-- limit kata  --}}
             <p class="my-4 font-light">{{ Str::limit($post['body'], 50) }}
