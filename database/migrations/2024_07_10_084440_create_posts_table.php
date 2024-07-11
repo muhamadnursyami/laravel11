@@ -18,9 +18,15 @@ return new class extends Migration
             // $table->unsignedBigInteger('author_id');
             // $table->foreign('author_id')->references('id')->on('users');
             // Penulisan 2
+            // Membuat relasi antar tabel user dan post
             $table->foreignId('author_id')->constrained(
                 table: 'users',
                 indexName: 'posts_author_id'
+            );
+            // Membuat relasi antar tabel post dan category
+            $table->foreignId('category_id')->constrained(
+                table: 'categories',
+                indexName: 'posts_category_id'
             );
             $table->string('slug')->unique();
             $table->text('body');
