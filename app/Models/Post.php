@@ -11,6 +11,7 @@ class Post extends Model
     use HasFactory;
     protected $fillable = ['title', 'authors', 'slug', 'body'];
 
+    protected $with = ['author', 'category']; 
     // Menghubungkan Antara Model Post dan Model User
     // yaitu kita mau tau tulisan post ini di tulis oleh siapa
     public function  author(): BelongsTo

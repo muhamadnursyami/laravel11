@@ -15,8 +15,14 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about',  ["title" => "About Page", "name"  => "Muhamad Nur Syami"]);
 });
+
 Route::get('/posts', function () {
-    return view('posts', ["title"  => "Blog Page", 'posts' => Post::all()]);
+    // menggunakan eager loading untuk menangai masalah N+1 atau Lazy Loading
+    // untuk menampilkan tulisan post paling baru menggunakan latest();
+    //with() author dan category harus sesuai dengan model nya contoh disin adalah Model Post
+    // $posts = Post::with(['author', 'category'])->latest()->get(); // bagusnya digunakan di modelnya saja
+    $posts = Post::latest()->get();     
+    return view('posts', ["title"  => "Blog Page", 'posts' => $posts]);
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
@@ -25,11 +31,15 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 });
 
 Route::get('/authors/{user:username}', function (User $user) {
-
+    // Menggunakan Lazy Egaer Loading digunakan karena penggunaa with tidak bisa karena
+    // parent nya udah digunakan,  di bagian code $user->posts
+    // $posts = $user->posts->load('category', 'author'); // bagusnya digunakan di modelnya saja
     return view('posts', ['title' => count($user->posts) . " Artikel By " . $user->name, 'posts' => $user->posts]);
 });
 Route::get('/categories/{category:slug}', function (Category $category) {
-
+    // Menggunakan Lazy Egaer Loading digunakan karena penggunaa with tidak bisa karena
+    // parent nya udah digunakan,  di bagian code $category->posts
+    // $posts = $category->posts->load('category', 'author'); // bagusnya digunakan di modelnya saja
     return view('posts', ['title' => " Artikel By Category " . $category->name, 'posts' => $category->posts]);
 });
 Route::get('/contact', function () {
