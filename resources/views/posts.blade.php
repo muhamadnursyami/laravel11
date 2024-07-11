@@ -9,7 +9,8 @@
 
             </a>
             <div class="text-base text-gray-500">
-                <a href=""> {{ $post['authors'] }}</a>
+                <a href="/authors/{{ $post->author->id }}" class="hover:underline"> {{ $post->author->name }}</a> |
+                {{ $post->created_at->diffForHumans() }}
             </div>
             {{-- limit kata  --}}
             <p class="my-4 font-light">{{ Str::limit($post['body'], 50) }}

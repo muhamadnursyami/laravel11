@@ -6,7 +6,8 @@
         <h2 class="mb-1 text-3xl tracking-tighter font-bold text-gray-900">
             {{ $post['title'] }}</h2>
         <div class="text-base text-gray-500">
-            <a href=""> {{ $post['authors'] }}</a> | {{ $post->created_at->diffForHumans() }}
+            <a href="/authors/{{ $post->author->id }}" class="hover:underline"> {{ $post->author->name }}</a> |
+            {{ $post->created_at->diffForHumans() }}
         </div>
         {{-- limit kata  --}}
         <p class="my-4 font-light">{{ $post['body'] }}
