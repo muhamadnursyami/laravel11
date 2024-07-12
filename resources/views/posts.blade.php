@@ -4,6 +4,12 @@
     <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
         <div class="mx-auto max-w-screen-md sm:text-center">
             <form>
+                @if (request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                @if (request('author'))
+                    <input type="hidden" name="author" value="{{ request('author') }}">
+                @endif
                 <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                     <div class="relative w-full">
                         <label for="search"
@@ -36,7 +42,7 @@
     <div class="py-4 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-0 ">
 
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            @foreach ($posts as $post)
+            @forelse ($posts as $post)
                 {{-- UI ARTIKEL LAMA --}}
                 {{-- <article class="py-8 max-w-screen-md border-b-2 border-gray-400">
             <a href="/posts/{{ $post['slug'] }}" class="hover:underline">
@@ -64,7 +70,7 @@
                     <div class="flex justify-between items-center mb-5 text-gray-500">
                         {{-- Menggunakan dynamic Class pada tailwincss --}}
                         {{-- bg-{{ $post->category->color }}-100 --}}
-                        <a href="/categories/{{ $post->category->slug }}">
+                        <a href="/posts?category={{ $post->category->slug }}">
                             <span
                                 class="bg-{{ $post->category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                                 {{ $post->category->name }}
@@ -89,7 +95,7 @@
                             <img class="w-7 h-7 rounded-full"
                                 src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                                 alt="  {{ $post->author->name }}" />
-                            <a href="/authors/{{ $post->author->username }}">
+                            <a href="/posts?author={{ $post->author->username }}">
 
                                 <span class="font-medium text-xs dark:text-white">
                                     {{ $post->author->name }}
@@ -109,7 +115,14 @@
                         </a>
                     </div>
                 </article>
-            @endforeach
+
+            @empty
+                <div class="text-center mx-auto">
+
+                    <p class="font-semibold text-xl my-4">Artikel Not Found</p>
+                    <a href="/posts" class="block text-blue-300 hover:underline">&laquo; Back to all post</a>
+                </div>
+            @endforelse
         </div>
     </div>
 </x-layout>

@@ -19,15 +19,12 @@ Route::get('/about', function () {
 // Ini adalah fitur search sederhana
 Route::get('/posts', function () {
     // Kode yang aktif kode baru dengan search
-    // cara baca: siapin dulu data post select * from
-    $posts = Post::latest();
+
     // untuk megecek apakah ada request atau tidak dihalaman /posts
     // dump(request('search'));
 
-    // kalo misalkan ada request tambahakan filternya, kalo nggak langsung post->get 
-    if (request('search')) {
-        $posts->where('title', 'like', '%' . request('search') . '%');
-    }
+
+
     // menggunakan eager loading untuk menangai masalah N+1 atau Lazy Loading
     // untuk menampilkan tulisan post paling baru menggunakan latest();
     //with() author dan category harus sesuai dengan model nya contoh disin adalah Model Post
@@ -35,7 +32,7 @@ Route::get('/posts', function () {
     // kode lama tanpa search
     // $posts = Post::latest()->get();
 
-    return view('posts', ["title"  => "Blog Page", 'posts' => $posts->get()]);
+    return view('posts', ["title"  => "Blog Page", 'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->get()]);
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
